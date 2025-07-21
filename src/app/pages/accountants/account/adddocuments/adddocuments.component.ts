@@ -19,6 +19,7 @@ import { CategoryService } from '../../../../services/accountants/category.servi
 import { DocumentTypeService } from '../../../../services/accountants/document-type.service';
 import { response } from 'express';
 import { SourceTypeService } from '../../../../services/accountants/source-type.service';
+import { SubcategoryService } from '../../../../services/accountants/subcategory.service';
 
 @Component({
   selector: 'app-adddocuments',
@@ -52,7 +53,8 @@ export class AdddocumentsComponent {
   documents: any;
   sources: any[] = [];
   sourceTypes: any[] = [];
-  category: any;
+  category: any[] = [];
+  subcategory: any[] = [];
   options: any[] = [];
   myControl = new FormControl('');
   filteredOptions: Observable<any[]>;
@@ -64,6 +66,7 @@ export class AdddocumentsComponent {
     private sourceServices:SourceTypeService,
     private sourcesServices:SourcesService,
     private categoryServices:CategoryService,
+    private subCategoryServices:SubcategoryService,
     private documentType:DocumentTypeService,
     private roleService: RolePermissionService,
     private dialogRef: MatDialogRef<AdddocumentsComponent>) {
@@ -74,10 +77,10 @@ export class AdddocumentsComponent {
 
     if(this.data){
       this.sourceData = this.data.data;
-     
+
     }
     this.configForm();
-    this.getCategory();
+    this.getCategorys();
     this.getDocumentType();
 
 
@@ -100,7 +103,8 @@ export class AdddocumentsComponent {
       tin_number: new FormControl(null, Validators.required),
       source_name: new FormControl(null, Validators.required),
       source_type_id: new FormControl(null),
-      category_id: new FormControl(null),
+      category_name: new FormControl(null,Validators.required),
+      sub_category_id:new FormControl(null),
       document_type_id: new FormControl(null),
       year: new FormControl(null, Validators.required),
       document_file:new FormControl(null, Validators.required),
@@ -137,12 +141,12 @@ export class AdddocumentsComponent {
   // }
 
 
-  getCategory(){
-    this.categoryServices.getAllCategory().subscribe(response=>{
-      this.category=response.data;
+  // getCategory(){
+  //   this.categoryServices.getAllCategory().subscribe(response=>{
+  //     this.category=response.data;
 
-    })
-  }
+  //   })
+  // }
 
   getDocumentType(){
     this.documentType.getAllDocumentType().subscribe(response=>{
@@ -151,6 +155,25 @@ export class AdddocumentsComponent {
     })
   }
 
+
+   onCategoryChange(selectedCategoryName: string): void {
+    this.subCategoryServices.getSubCategorysByCategoryName(selectedCategoryName)
+      .subscribe((response) => {
+        console.log("data ",response.data)
+        if (response.data) {
+          this.subcategory = response.data;
+        } else {
+          this.subcategory = [];
+        }
+      });
+  }
+
+  getCategorys(){
+    this.categoryServices.getAllCategory().subscribe(response=>{
+      this.category=response.data;
+
+    })
+  }
   onSourceChange(selectedSourceName: string): void {
     this.sourceServices.getSourceTypesBySourceName(selectedSourceName)
       .subscribe((response) => {
@@ -162,13 +185,14 @@ export class AdddocumentsComponent {
         }
       });
   }
-
-  getSouurce(){
+   getSouurce(){
     this.sourcesServices.getAllSource().subscribe(response=>{
       this.sources=response.data;
 
     })
   }
+
+
 
 
 

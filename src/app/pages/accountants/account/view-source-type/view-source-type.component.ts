@@ -1,4 +1,4 @@
-import { Response } from './../../../../../../node_modules/webpack-dev-server/node_modules/http-proxy-middleware/dist/types.d';
+
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';

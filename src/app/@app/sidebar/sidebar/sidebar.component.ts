@@ -144,7 +144,7 @@ export class SidebarComponent {
           type: 'link',
           name: 'Sub Category',
           link: '/pages/accounts/subcategory',
-          permission: 'Accountant Module',
+          permission: 'View Sub Category',
 
         },
         {

@@ -30,7 +30,7 @@
         <div class="form-row">
           <mat-form-field class="form-field">
             <mat-label>Tin Number or ZanID</mat-label>
-            <input matInput placeholder="Ex. 6200000938883" formControlName="tin_number or ZanID" type="text">
+            <input matInput placeholder="Ex. 6200000938883" formControlName="tin_number" type="text">
             <mat-error *ngIf="userForm.controls['tin_number'].touched && userForm.controls['tin_number'].invalid">
               <span *ngIf="userForm.controls['tin_number'].errors?.['required']">This field is mandatory</span>
               <span *ngIf="userForm.controls['tin_number'].errors?.['pattern']">Must contain alphabetical characters only</span>
@@ -49,8 +49,7 @@
 
         <!-- Row 3: Email, Phone Number -->
         <div class="form-row">
-          <!-- Source Name Selector -->
-           <!-- Source Name Selector -->
+
        <mat-form-field class="w-full mt-6">
          <mat-label>Source Name</mat-label>
         <mat-select formControlName="source_name" (selectionChange)="onSourceChange($event.value)">
@@ -71,28 +70,26 @@
    </mat-form-field>
 
 
-          <!-- <mat-form-field class="w-full mt-6">
-            <mat-label>Source Name</mat-label>
-            <mat-select formControlName="source_type_id">
-              <mat-option *ngFor="let s of source" [value]="s.source_type_id">
-                {{ s.source_type_name }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field> -->
-
-
-
         </div>
         <div class="form-row">
-          <mat-form-field class="w-full mt-6">
-            <mat-label>Category Name</mat-label>
-            <mat-select formControlName="category_id">
-              <mat-option *ngFor="let c of category" [value]="c.category_id">
-                {{ c.category_name }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
+           <mat-form-field class="w-full mt-6">
+         <mat-label>Category Name</mat-label>
+        <mat-select formControlName="category_name" (selectionChange)="onCategoryChange($event.value)">
+         <mat-option *ngFor="let cates of category" [value]="cates.category_name">
+             {{ cates.category_name }}
+        </mat-option>
+       </mat-select>
+     </mat-form-field>
+
+            <mat-form-field class="w-full mt-6" *ngIf="subcategory.length > 0">
+            <mat-label>Sub Category Name</mat-label>
+            <mat-select formControlName="sub_category_id">
+          <mat-option *ngFor="let type of subcategory" [value]="type.sub_category_id">
+            {{ type.sub_category_name }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+          </div>
 
 
 
@@ -101,7 +98,7 @@
         <!-- Row 6: Date of Birth -->
         <div class="form-row">
            <mat-form-field class="w-full mt-6">
-            <mat-label>Date of Birth</mat-label>
+            <mat-label>Year</mat-label>
             <input matInput [matDatepicker]="picker" formControlName="year" placeholder="Choose a date">
             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
