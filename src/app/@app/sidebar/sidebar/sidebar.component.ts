@@ -57,34 +57,6 @@ export class SidebarComponent {
     },
 
     {
-      id: 'dashboard1',
-      type: 'Single',  // Changed from 'group' to 'link'
-      name: 'Dashboard',
-      icon: 'dashboard',
-      permission: 'View Referral Dashboard',
-      link: '/pages/dashboard/finance'
-    },
-
-
-
-    // {
-    //   id: 'dashboard',
-    //   type: 'group',
-    //   name: 'Dashboard',
-    //   icon: 'dashboard',
-    //   permission: 'View Dashboard',
-    //   children: [
-    //     {
-    //       type: 'link',
-    //       name: 'Dashboard',
-    //       link: '/pages/dashboard',
-    //       permission: 'View Dashboard',
-
-    //     }
-    //   ]
-    // },
-
-    {
       id: 'users',
       type: 'group',
       name: 'Config Users & Audit',
@@ -122,164 +94,18 @@ export class SidebarComponent {
       name: 'System Configuration',
       permission: 'Setup Management',
       children: [
-        // {
-        //   type: 'link',
-        //   name: 'View Country',
-        //   link: '/pages/config/country',
-        //   permission: 'Setup Management',
 
-        // },
         {
           type: 'link',
           name: 'Location',
           link: '/pages/config/location',
           permission: 'Setup Management',
         },
-        // {
-        //   type: 'link',
-        //   name: 'Employer',
-        //   link: '/pages/config/employer',
-        //   permission: 'Setup Management',
-        // },
-        // {
-        //   type: 'link',
-        //   name: 'Work Station',
-        //   link: '/pages/config/work-station',
-        //   permission: 'Setup Management',
-        // },
-        // {
-        //   type: 'link',
-        //   name: 'Employer Type',
-        //   link: '/pages/config/employer-type',
-        //   permission: 'View Employer Type',
-        // },
-        {
-          type: 'link',
-          name: 'Hospital',
-          link: '/pages/config/hospital',
-          permission: 'View Hospital',
-
-        },
 
 
-        {
-          type: 'link',
-          name: 'Referral Type',
-          link: '/pages/config/referal-type',
-          permission: 'View ReferralType',
-
-        },
-
-
-        {
-          type: 'link',
-          name: 'Reason',
-          link: '/pages/config/reasons',
-          permission: 'View Reason',
-        }
       ]
     },
 
-    {
-      id: 'PID',
-      type: 'group',
-      name: 'Patient',
-      icon: 'menu',
-      permission: 'View Patient',
-      children: [
-        {
-          type: 'link',
-          name: 'Patient',
-          link: '/pages/patient',
-          permission: 'View Patient',
-
-        },
-         {
-          type: 'link',
-          name: 'Insurances',
-          link: '/pages/patient/insurances0000011111',
-          permission: 'View Patient',
-
-        }
-      ]
-    },
-    {
-      id: 'referral',
-      type: 'group',
-      name: 'Referral Management',
-      icon: 'call_split',
-      permission: 'View Referral',
-      children: [
-        {
-          type: 'link',
-          name: 'View referral',
-          link: '/pages/config/referrals',
-          permission: 'View Referral',
-        },
-        {
-          type: 'link',
-          name: 'Confirmed Referral',
-          link: '/pages/config/referrals/confirm0000111101',
-          permission: 'View Referral',
-        },
-
-
-
-        //  {
-        //   type: 'link',
-        //   name: 'Range Report',
-        //  link: '/pages/config/referrals/referralreport0990',
-
-        //   permission: 'View Monthly Bill',
-
-        // }
-      ]
-    },
-    {
-           id: 'bills',
-           type: 'Single',
-          name: 'View Bill',
-          icon:'bill',
-          link: '/pages/config/referrals/bill',
-          permission: 'View Referral',
-
-        },
-         {
-          id: 'payment',
-          type: 'Single',
-          name: 'Payment',
-          icon:'payment',
-          link: '/pages/config/referrals/billpayment2222200000',
-          permission: 'View Referral',
-
-        },
-         {
-          id: 'months1',
-          type: 'Single',
-          name: 'Month Bill',
-          icon:'month',
-          link: '/pages/config/referrals/monthbill00998778',
-          permission: 'View Monthly Bill',
-
-        },
-     {
-      id: 'report3',
-      type: 'Single',  // Changed from 'group' to 'link'
-      name: 'Range Report',
-      icon: 'report',
-      permission: 'View Monthly Bill',
-      link: '/pages/patient/referralreport0990',
-
-    },
-     {
-      id: 'report4',
-      type: 'Single',  // Changed from 'group' to 'link'
-      name: 'Search Report',
-      icon: 'search',
-      permission: 'View Monthly Bill',
-      link: '/pages/patient/searchreport99990000',
-
-    },
 
 
 
@@ -288,7 +114,7 @@ export class SidebarComponent {
     {
       id: 'accountant',
       type: 'group',
-      name: 'Accountant Setup',
+      name: 'System Configuration',
       icon: 'menu',
       // permission: 'Accountant Module',
       permission: 'Accountant Module',
@@ -311,6 +137,13 @@ export class SidebarComponent {
           type: 'link',
           name: 'Category',
           link: '/pages/accounts/category',
+          permission: 'Accountant Module',
+
+        },
+         {
+          type: 'link',
+          name: 'Sub Category',
+          link: '/pages/accounts/subcategory',
           permission: 'Accountant Module',
 
         },

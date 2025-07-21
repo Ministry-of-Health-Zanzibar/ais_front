@@ -15,6 +15,11 @@ const routes: Routes = [
     loadComponent:()=>import('./view-category/view-category.component').then(c=>c.ViewCategoryComponent)
   },
   {
+    path:'subcategory',
+    loadComponent:()=>import('./categorytype/subcategory/subcategory.component').then(c=>c.SubcategoryComponent)
+
+  },
+  {
     path:'documentCategory',
     loadComponent:()=>import('./document-type/document-type.component').then(c=>c.DocumentTypeComponent)
   },
