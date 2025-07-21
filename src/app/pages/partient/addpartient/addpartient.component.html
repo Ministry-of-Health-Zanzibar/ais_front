@@ -1,0 +1,123 @@
+<div class="form-container">
+  <div class="w-full">
+    <div class="relative h-full rounded-lg group p-6">
+      <!-- Title -->
+      <div class="font-semibold" *ngIf="!patientData">CREATE NEW PATIENT</div>
+      <div class="font-semibold" *ngIf="patientData">UPDATE PATIENT</div>
+
+      <!-- Form -->
+      <form [formGroup]="patientForm" class="horizontal-form" enctype="multipart/form-data">
+
+        <!-- Row 1: Full Name, Gender -->
+        <div class="form-row">
+          <mat-form-field class="form-field">
+            <mat-label>Full Name</mat-label>
+            <input matInput placeholder="Ex. Ali Juma Ali" formControlName="name" type="text">
+            <mat-error *ngIf="patientForm.get('name')?.invalid && patientForm.get('name')?.touched">
+              <span *ngIf="patientForm.get('name')?.errors?.['required']">This field is mandatory</span>
+              <span *ngIf="patientForm.get('name')?.errors?.['pattern']">Must contain alphabetical characters only</span>
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="form-field">
+            <mat-label>Gender</mat-label>
+            <mat-select formControlName="gender">
+              <mat-option value="Male">Male</mat-option>
+              <mat-option value="Female">Female</mat-option>
+            </mat-select>
+            <mat-error *ngIf="patientForm.get('gender')?.invalid && patientForm.get('gender')?.touched">
+              This field is mandatory
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <!-- Row 2: Address, Phone Number -->
+        <div class="form-row">
+          <mat-form-field class="form-field">
+            <mat-label>Address</mat-label>
+            <input matInput placeholder="Ex. MWERA" formControlName="location" type="text">
+            <mat-error *ngIf="patientForm.get('location')?.invalid && patientForm.get('location')?.touched">
+              <span *ngIf="patientForm.get('location')?.errors?.['required']">This field is mandatory</span>
+              <span *ngIf="patientForm.get('location')?.errors?.['pattern']">Must contain alphabetical characters only</span>
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="form-field">
+            <mat-label>Phone Number</mat-label>
+            <input matInput placeholder="Ex. +255 777000000" formControlName="phone" type="text">
+            <mat-error *ngIf="patientForm.get('phone')?.invalid && patientForm.get('phone')?.touched">
+              <span *ngIf="patientForm.get('phone')?.errors?.['required']">This field is mandatory</span>
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <!-- Row 3: Job, Position -->
+        <div class="form-row">
+          <mat-form-field class="form-field">
+            <mat-label>Job</mat-label>
+            <input matInput placeholder="Ex. Teacher" formControlName="job" type="text">
+            <mat-error *ngIf="patientForm.get('job')?.invalid && patientForm.get('job')?.touched">
+              <span *ngIf="patientForm.get('job')?.errors?.['required']">This field is mandatory</span>
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="form-field">
+            <mat-label>Position</mat-label>
+            <input matInput placeholder="Ex. Head" formControlName="position" type="text">
+            <mat-error *ngIf="patientForm.get('position')?.invalid && patientForm.get('position')?.touched">
+              <span *ngIf="patientForm.get('position')?.errors?.['required']">This field is mandatory</span>
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <!-- Row 4: Date of Birth, File Upload -->
+        <div class="form-row">
+          <mat-form-field class="form-field w-full">
+            <mat-label>Date of Birth</mat-label>
+            <input matInput type="date" formControlName="date_of_birth">
+            <mat-error *ngIf="patientForm.get('date_of_birth')?.invalid && patientForm.get('date_of_birth')?.touched">
+              This field is mandatory
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="form-field w-full">
+            <mat-label>Upload File</mat-label>
+            <input
+              matInput
+              type="text"
+              formControlName="referral_letter_file"
+              readonly
+              placeholder="No file chosen"
+              (click)="fileInput.click()"
+            />
+            <input
+              type="file"
+              accept=".pdf,.doc,.docx,.jpg,.png"
+              hidden
+              #fileInput
+              (change)="onAttachmentSelected($event)"
+            />
+            <mat-icon matSuffix style="cursor: pointer;" (click)="fileInput.click()">attach_file</mat-icon>
+            <mat-error *ngIf="patientForm.get('referral_letter_file')?.invalid && patientForm.get('referral_letter_file')?.touched">
+              File is required
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+      </form>
+
+      <!-- Actions -->
+      <mat-dialog-actions align="end">
+        <button mat-button (click)="onClose()">Cancel</button>
+        <button
+          mat-flat-button
+          color="primary"
+          [disabled]="patientForm.invalid"
+          (click)="patientData ? updatePatient() : savePatient()"
+        >
+          {{ patientData ? 'Update' : 'Save' }}
+        </button>
+      </mat-dialog-actions>
+    </div>
+  </div>
+</div>

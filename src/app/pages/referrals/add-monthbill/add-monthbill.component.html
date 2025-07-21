@@ -1,0 +1,116 @@
+<div class="form-container">
+    <div class="w-full">
+      <div class="relative h-full rounded-lg group p-6">
+        <div class="font-semibold text-lg mb-4" *ngIf="!id">CREATE NEW REFERRALS</div>
+        <div class="font-semibold text-lg mb-4" *ngIf="id">UPDATE REFERRALS</div>
+
+        <form [formGroup]="referralsForm" class="horizontal-form" >
+          <!-- Patient Name -->
+           <div class="form-row">
+          <mat-form-field appearance="outline" class="w-full">
+        <mat-label>Current Amount</mat-label>
+        <mat-icon matPrefix>attach_money</mat-icon>
+        <input matInput formControlName="current_monthly_bill_amount" type="number" placeholder="e.g. 2,000,000">
+        <mat-error *ngIf="referralsForm.get('current_monthly_bill_amount')?.hasError('required')">
+          Amount is required
+        </mat-error>
+
+      </mat-form-field>
+      </div>
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="w-full">
+        <mat-label>Current Amount After Audit</mat-label>
+        <mat-icon matPrefix>attach_money</mat-icon>
+        <input matInput formControlName="after_audit_monthly_bill_amount" type="number" placeholder="e.g. 2,000,000">
+        <!-- <mat-error *ngIf="referralsForm.get('after_audit_monthly_bill_amount')?.hasError('required')">
+          Amount is required
+        </mat-error> -->
+
+      </mat-form-field>
+      </div>
+
+          <!-- Hospital Name -->
+          <div class="form-row">
+            <mat-form-field appearance="outline" class="w-full">
+              <mat-label>Hospital Name</mat-label>
+              <mat-select formControlName="hospital_id">
+                <mat-option *ngFor="let h of hospital" [value]="h.hospital_id">
+                  {{ h.hospital_name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+
+
+
+
+          <!-- Start Date -->
+            <div class="form-row">
+          <mat-form-field class="form-field w-full">
+            <mat-label>Date of Birth</mat-label>
+            <input matInput type="date" formControlName="bill_date">
+            <!-- <mat-error *ngIf="referralsForm.get('bill_date')?.invalid && referralsForm.get('bill_date')?.touched">
+              This field is mandatory
+            </mat-error> -->
+          </mat-form-field>
+          </div>
+          <!-- <div class="form-row">
+            <mat-form-field appearance="outline" class="w-full">
+              <mat-label>Start Date</mat-label>
+              <input matInput [matDatepicker]="startPicker" formControlName="bill_date" placeholder="Choose a date">
+              <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+              <mat-datepicker #startPicker></mat-datepicker>
+              <mat-error *ngIf="referralsForm.controls['bill_date'].touched && referralsForm.controls['bill_date'].invalid">
+                <span *ngIf="referralsForm.controls['bill_date'].errors?.['required']">This field is mandatory</span>
+              </mat-error>
+            </mat-form-field>
+          </div> -->
+      <div class="form-row">
+           <mat-form-field class="form-field w-full">
+            <mat-label>Upload File</mat-label>
+            <input
+              matInput
+              type="text"
+              formControlName="bill_file"
+              readonly
+              placeholder="No file chosen"
+              (click)="fileInput.click()"
+            />
+            <input
+              type="file"
+              accept=".pdf,.doc,.docx,.jpg,.png"
+              hidden
+              #fileInput
+              (change)="onAttachmentSelected($event)"
+            />
+            <mat-icon matSuffix style="cursor: pointer;" (click)="fileInput.click()">attach_file</mat-icon>
+            <mat-error *ngIf="referralsForm.get('bill_file')?.invalid && referralsForm.get('bill_file')?.touched">
+              File is required
+            </mat-error>
+          </mat-form-field>
+</div>
+
+        </form>
+      </div>
+
+      <!-- <mat-dialog-actions align="end">
+        <button mat-button mat-dialog-close class="!text-red-600 hover:!text-red-700 font-semibold">Cancel</button>
+        <button mat-flat-button color="primary" *ngIf="!id" [disabled]="referralsForm.invalid" (click)="saveReferrals()">Save Data</button>
+        <button mat-flat-button color="accent" *ngIf="id" [disabled]="referralsForm.invalid" (click)="updateReferrals()">Update</button>
+
+      </mat-dialog-actions> -->
+      <mat-dialog-actions align="end">
+        <button mat-button (click)="onClose()">Cancel</button>
+        <button
+          mat-flat-button
+          color="primary"
+          [disabled]="referralsForm.invalid"
+          (click)="patientData ? updateReferrals() : saveReferrals()"
+        >
+          {{ patientData ? 'Update' : 'Save' }}
+        </button>
+      </mat-dialog-actions>
+
+
+  </div>
