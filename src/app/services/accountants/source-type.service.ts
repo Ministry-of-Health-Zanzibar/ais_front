@@ -19,6 +19,9 @@ export class SourceTypeService {
   public getSourceTypesBySourceName(sourceName: string): Observable<any> {
     return this.http.get<any>(`${this.baseUrl}sourceTypes/source/${sourceName}`);
   }
+   public getSourceTypesBySourceId(sourceName: number): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}sourceTypes/source/${sourceName}`);
+  }
 
 
   public getSourceTypeById(id: any): Observable<any> {

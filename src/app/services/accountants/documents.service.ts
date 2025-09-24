@@ -29,7 +29,7 @@ export class DocumentsService {
   }
 
   public updateDocument(Document:any, id:any): Observable<any>{
-    return this.http.put(`${this.href}/${id}`,Document)
+    return this.http.post(`${this.href}/update/${id}`,Document)
   }
 
   public unblockDocument(data: any, id:any): Observable<any>{

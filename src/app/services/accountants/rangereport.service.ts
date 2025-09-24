@@ -18,6 +18,15 @@ export class RangereportService {
     return this.http.post<any>(this.href_final, { start_date: startDate, end_date: endDate });
   }
 
+   generateDateReports(data: {
+    start_date: string;
+    end_date: string;
+    source_id?: number;
+    source_type_id?: number;
+  }): Observable<any> {
+    return this.http.post<any>(this.href_final, data);
+  }
+
   public generateReport(data: any): Observable<any> {
     return this.http.post<any>(`${this.href_parameter}`, data);
   }

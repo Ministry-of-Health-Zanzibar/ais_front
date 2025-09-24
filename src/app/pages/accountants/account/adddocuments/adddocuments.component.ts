@@ -63,7 +63,7 @@ export class AdddocumentsComponent {
 
   constructor(
     private docService:DocumentsService,
-    private sourceServices:SourceTypeService,
+    private sourceType:SourceTypeService,
     private sourcesServices:SourcesService,
     private categoryServices:CategoryService,
     private subCategoryServices:SubcategoryService,
@@ -100,7 +100,7 @@ export class AdddocumentsComponent {
     this.userForm = new FormGroup({
       payee_name: new FormControl(null, Validators.required ),
       amount: new FormControl(null, Validators.required),
-      tin_number: new FormControl(null, Validators.required),
+      tin_number: new FormControl(null),
       source_name: new FormControl(null, Validators.required),
       source_type_id: new FormControl(null),
       category_name: new FormControl(null,Validators.required),
@@ -114,39 +114,6 @@ export class AdddocumentsComponent {
       this.userForm.patchValue(this.sourceData);
     }
   }
-
-
-  // getDocumentById(id: any) {
-  //   this.docService.getDocumentById(id).subscribe(response => {
-  //     if (response.statusCode == 200) {
-  //       this.user = response.data[0];
-  //       this.userForm.patchValue(this.user);
-
-  //       // ✅ Handle source_name and dynamically load source types
-  //       if (this.user.source_name) {
-  //         this.userForm.patchValue({ source_name: this.user.source_name });
-  //         this.onSourceChange(this.user.source_name);
-  //       }
-
-  //     } else {
-  //       Swal.fire({
-  //         title: "Error",
-  //         text: response.message,
-  //         icon: "error",
-  //         confirmButtonColor: "#4690eb",
-  //         confirmButtonText: "Close"
-  //       });
-  //     }
-  //   });
-  // }
-
-
-  // getCategory(){
-  //   this.categoryServices.getAllCategory().subscribe(response=>{
-  //     this.category=response.data;
-
-  //   })
-  // }
 
   getDocumentType(){
     this.documentType.getAllDocumentType().subscribe(response=>{
@@ -175,7 +142,7 @@ export class AdddocumentsComponent {
     })
   }
   onSourceChange(selectedSourceName: string): void {
-    this.sourceServices.getSourceTypesBySourceName(selectedSourceName)
+    this.sourceType.getSourceTypesBySourceName(selectedSourceName)
       .subscribe((response) => {
         console.log("data ",response.data)
         if (response.data) {

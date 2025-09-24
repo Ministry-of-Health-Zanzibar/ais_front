@@ -53,7 +53,7 @@ export class SidebarComponent {
       name: 'Dashboard',
       icon: 'dashboard',
       permission: 'View Dashboard',
-      link: '/pages/dashboard/basic'
+      link: '/pages/dashboard'
     },
 
     {
@@ -87,30 +87,7 @@ export class SidebarComponent {
         },
       ]
     },
-    {
-      id: 'configid',
-      type: 'group',
-      icon: 'settings',
-      name: 'System Configuration',
-      permission: 'Setup Management',
-      children: [
-
-        {
-          type: 'link',
-          name: 'Location',
-          link: '/pages/config/location',
-          permission: 'Setup Management',
-        },
-
-
-      ]
-    },
-
-
-
-
-
-
+  
     {
       id: 'accountant',
       type: 'group',

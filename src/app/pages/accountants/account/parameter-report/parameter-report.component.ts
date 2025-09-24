@@ -21,13 +21,8 @@ import * as XLSX from 'xlsx';
 // import { saveAs } from 'file-saver';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
-// import { saveAs } from 'file-saver';
-
-
 
 import autoTable from 'jspdf-autotable';
-
-
 
 import { EmrSegmentedModule } from '@elementar/components';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
@@ -36,6 +31,8 @@ import { RangereportService } from '../../../../services/accountants/rangereport
 import { SourcesService } from '../../../../services/accountants/sources.service';
 import { SourceTypeService } from '../../../../services/accountants/source-type.service';
 import { CategoryService } from '../../../../services/accountants/category.service';
+import { SubcategoryService } from '../../../../services/accountants/subcategory.service';
+import { environment } from '../../../../../environments/environment.prod';
 
 @Component({
   selector: 'app-parameter-report',
@@ -59,6 +56,7 @@ import { CategoryService } from '../../../../services/accountants/category.servi
   styleUrl: './parameter-report.component.scss'
 })
 export class ParameterReportComponent implements OnInit, OnDestroy {
+  public documentUrl = environment.fileUrl;
 
   loading: boolean = false;
   private readonly onDestroy = new Subject<void>();
@@ -68,9 +66,10 @@ export class ParameterReportComponent implements OnInit, OnDestroy {
   dataSource = new MatTableDataSource<any>();
 
   documents: any[] = [];
-  sources:any;
-  sourceType:any;
-  category:any;
+  sources: any[] = [];
+  sourceTypes: any[] = [];
+   category: any[] = [];
+   subcategory: any[] = [];
 
   errorMessage = '';
 
@@ -83,6 +82,7 @@ export class ParameterReportComponent implements OnInit, OnDestroy {
     private sourceServices:SourcesService,
     private sourceTypeService:SourceTypeService,
     private categoryServices:CategoryService,
+    private subCategoryServices:SubcategoryService,
     private reportService: RangereportService,
     private fb: FormBuilder,
     private dialog: MatDialog
@@ -94,7 +94,7 @@ export class ParameterReportComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.configForm();
     this.getSource();
-    this.getSourceType();
+    // this.getSourceType();
     this.getCategory();
   }
 
@@ -114,6 +114,24 @@ export class ParameterReportComponent implements OnInit, OnDestroy {
     }
   }
 
+    onSourceChange(selectedSourceName: string): void {
+    this.sourceTypeService.getSourceTypesBySourceName(selectedSourceName)
+      .subscribe((response) => {
+        console.log("data ",response.data)
+        if (response.data) {
+          this.sourceTypes = response.data;
+        } else {
+          this.sourceTypes = [];
+        }
+      });
+  }
+   getSource(){
+    this.sourceServices.getAllSource().subscribe(response=>{
+      this.sources=response.data;
+
+    })
+  }
+
   configForm(): void {
     this.reportForm = new FormGroup({
       source_name: new FormControl(null),
@@ -125,20 +143,23 @@ export class ParameterReportComponent implements OnInit, OnDestroy {
     });
   }
 
-  getSource(): void {
-    this.sourceServices.getAllSource().subscribe(response => {
-      this.sources = response.data;
-    });
+   onCategoryChange(selectedCategoryName: string): void {
+    this.subCategoryServices.getSubCategorysByCategoryName(selectedCategoryName)
+      .subscribe((response) => {
+        console.log("data ",response.data)
+        if (response.data) {
+          this.subcategory = response.data;
+        } else {
+          this.subcategory = [];
+        }
+      });
   }
-  getSourceType(): void {
-    this.sourceTypeService.getAllSourceType().subscribe(response => {
-      this.sourceType = response.data;
-    });
-  }
-  getCategory(): void {
-    this.categoryServices.getAllCategory().subscribe(response => {
-      this.category = response.data;
-    });
+
+  getCategory(){
+    this.categoryServices.getAllCategory().subscribe(response=>{
+      this.category=response.data;
+
+    })
   }
 
   searchReport(): void {
@@ -154,29 +175,79 @@ export class ParameterReportComponent implements OnInit, OnDestroy {
     }
   }
 
-  // Fix: Improve search filter to work across all columns
 
+exportExcel(): void {
+  const dataToExport = this.dataSource.data;
 
+  // Filter and format the data
+  const selectedFields = dataToExport.map((item: any) => ({
+    Payee: item.payee_name,
+    Amount: item.amount,
+    DocumentType: item.document_type_name,
+    TIN: item.tin_number,
+    SourceType: item.source_type_name,
+    SourceName: item.source_name,
+    Category: item.category_name,
+  }));
 
+  // Create an empty sheet
+  const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet([]);
 
+  // Add custom title row at the top (A1)
+  XLSX.utils.sheet_add_aoa(worksheet, [['DOCUMENT REPORT']], { origin: 'A1' });
 
+  // Merge title across 7 columns (A1 to G1)
+  worksheet['!merges'] = [
+    {
+      s: { r: 0, c: 0 }, // start cell (row 0, col 0)
+      e: { r: 0, c: 6 }, // end cell (row 0, col 6) -> column G
+    },
+  ];
 
-  // Export Excel
-  exportExcel(): void {
-    const dataToExport = this.dataSource.data;
-    const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(dataToExport);
-    const workbook: XLSX.WorkBook = { Sheets: { 'Reports': worksheet }, SheetNames: ['Reports'] };
-    const excelBuffer: any = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
-   // this.saveAsExcelFile(excelBuffer, 'reports');
+  // Optionally set alignment for the title cell
+  const titleCell = worksheet['A1'];
+  if (titleCell) {
+    titleCell.s = {
+      alignment: { horizontal: 'center' },
+      font: { bold: true, sz: 14 },
+    };
   }
 
-  // private saveAsExcelFile(buffer: any, fileName: string): void {
-  //   const data: Blob = new Blob(
-  //     [buffer],
-  //     { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8' }
-  //   );
-  //   saveAs(data, `${fileName}_export_${new Date().getTime()}.xlsx`);
-  // }
+  // Add blank row
+  XLSX.utils.sheet_add_aoa(worksheet, [[]], { origin: -1 });
+
+  // Add data below the blank row
+  XLSX.utils.sheet_add_json(worksheet, selectedFields, {
+    origin: -1,
+    skipHeader: false,
+  });
+
+  // Create the workbook
+  const workbook: XLSX.WorkBook = {
+    Sheets: { 'Reports': worksheet },
+    SheetNames: ['Reports'],
+  };
+
+  // Write buffer
+  const excelBuffer: any = XLSX.write(workbook, {
+    bookType: 'xlsx',
+    type: 'array',
+    cellStyles: true, // needed for formatting
+  });
+
+  // Download file
+  const blob = new Blob([excelBuffer], {
+    type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+  });
+  const url = window.URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'document-report.xlsx';
+  a.click();
+  window.URL.revokeObjectURL(url);
+}
+
+
 
   // Export PDF
   exportPDF() {
@@ -200,10 +271,12 @@ export class ParameterReportComponent implements OnInit, OnDestroy {
     doc.save('report.pdf');
   }
 
-
-
-
-
+   viewPDF(element: any) {
+    if (element?.document_file) {
+      const url = this.documentUrl + element.document_file;
+      window.open(url, '_blank');
+    }
+  }
 
 }
 

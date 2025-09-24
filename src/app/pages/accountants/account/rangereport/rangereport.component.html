@@ -14,46 +14,75 @@
     </div>
   </div>
 
-  <div class="search-container bg-gray-100 p-6 rounded-xl shadow-md">
-    <form [formGroup]="reportForm" class="flex flex-wrap gap-4 items-end">
+ <div class="search-container bg-white p-6 rounded-2xl shadow-lg border border-gray-200">
+  <form [formGroup]="reportForm" class="space-y-6">
+
+    <!-- Section Title -->
+    <h2 class="text-xl font-bold text-gray-800 mb-2">Filter Reports</h2>
+
+    <!-- Grid for Form Fields -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+      <!-- Search By Source Name -->
+      <div>
+        <label class="block mb-1 text-sm font-medium text-gray-700">Source Name</label>
+        <mat-form-field appearance="fill" class="w-full">
+           <mat-select formControlName="source_name" >
+         <mat-option *ngFor="let s of sources" (click)="onGetSourceTypeName(s.source_name)" [value]="s.source_id">
+             {{ s.source_name }}
+        </mat-option>
+       </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div>
+        <label class="block mb-1 text-sm font-medium text-gray-700">Source Type</label>
+        <mat-form-field appearance="fill" class="w-full">
+           <mat-select formControlName="source_type_name">
+        <mat-option *ngFor="let type of sourceTypes" [value]="type.source_type_id">
+          {{ type.source_type_name }}
+          </mat-option>
+        </mat-select>
+        </mat-form-field>
+      </div>
 
       <!-- Start Date -->
-      <div class="flex flex-col w-full sm:w-1/3">
-        <label for="start_date" class="mb-1 text-sm font-semibold text-gray-700">Start Date</label>
+      <div>
+        <label class="block mb-1 text-sm font-medium text-gray-700">Start Date</label>
         <input
           type="date"
-          id="start_date"
           formControlName="start_date"
-          class="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          class="w-full rounded-lg border border-gray-300 p-3 text-base focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
       </div>
 
       <!-- End Date -->
-      <div class="flex flex-col w-full sm:w-1/3">
-        <label for="end_date" class="mb-1 text-sm font-semibold text-gray-700">End Date</label>
+      <div>
+        <label class="block mb-1 text-sm font-medium text-gray-700">End Date</label>
         <input
           type="date"
-          id="end_date"
           formControlName="end_date"
-          class="border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          class="w-full rounded-lg border border-gray-300 p-3 text-base focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
       </div>
+    </div>
 
-      <!-- Search Button -->
-      <div>
-        <button
-          mat-flat-button
-          color="primary"
-          class="h-[50px] px-6 rounded-md text-white bg-blue-600 hover:bg-blue-700 flex items-center gap-2"
-          (click)="fetchReports()"
-        >
-          <mat-icon>search</mat-icon>
-          Search
-        </button>
-      </div>
+    <!-- Search Button -->
+    <div class="flex justify-end">
+      <button
+        mat-flat-button
+        color="primary"
+        class="px-6 py-3 rounded-lg text-white bg-blue-600 hover:bg-blue-700 flex items-center gap-2"
+        (click)="fetchReports()"
+      >
+        <mat-icon>search</mat-icon>
+        Search
+      </button>
+    </div>
 
-    </form>
-  </div>
+  </form>
+</div>
+
 
 
   <div class="mt-4 flex items-center justify-between">
@@ -118,18 +147,12 @@
         <th mat-header-cell *matHeaderCellDef>View PDF</th>
         <td mat-cell *matCellDef="let element"> <ng-container *ngIf="element.document_file && element.document_file.endsWith('.pdf');">
           <a
-            [href]="'http://127.0.0.1:8000/storage/' + element.document_file"
-            target="_blank"
-            class="inline-flex items-center gap-2 text-indigo-600 hover:text-indigo-800 font-medium text-sm transition"
-          >
-          <button class="flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md">
-            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-              <path d="M6 2a2 2 0 00-2 2v12a2 2 0 002 2h8a2 2 0 002-2V7.828a2 2 0 00-.586-1.414l-3.828-3.828A2 2 0 0010.172 2H6zm4 1.414L14.586 8H11a1 1 0 01-1-1V3.414zM7 11a1 1 0 011 1v1a1 1 0 102 0v-1a1 1 0 112 0v1a3 3 0 11-6 0v-1a1 1 0 011-1z" />
-            </svg>
-            Export PDF
-          </button>
-
-          </a>
+                *ngIf="element?.document_file"
+                (click)="viewPDF(element)"
+                class="inline-flex items-center gap-1 text-indigo-600 hover:text-indigo-800 cursor-pointer"
+              >
+                <mat-icon>picture_as_pdf</mat-icon> View PDF
+              </a>
         </ng-container></td>
       </ng-container>
 

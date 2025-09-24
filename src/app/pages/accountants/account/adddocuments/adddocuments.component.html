@@ -31,10 +31,7 @@
           <mat-form-field class="form-field">
             <mat-label>Tin Number or ZanID</mat-label>
             <input matInput placeholder="Ex. 6200000938883" formControlName="tin_number" type="text">
-            <mat-error *ngIf="userForm.controls['tin_number'].touched && userForm.controls['tin_number'].invalid">
-              <span *ngIf="userForm.controls['tin_number'].errors?.['required']">This field is mandatory</span>
-              <span *ngIf="userForm.controls['tin_number'].errors?.['pattern']">Must contain alphabetical characters only</span>
-            </mat-error>
+         
           </mat-form-field>
 
           <mat-form-field class="form-field">

@@ -10,6 +10,7 @@ import { MatInputModule } from '@angular/material/input';
 import { ActivatedRoute } from '@angular/router';
 import { DocumentsService } from '../../../../services/accountants/documents.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { environment } from '../../../../../environments/environment.prod';
 
 @Component({
   selector: 'app-displaymore',
@@ -29,6 +30,7 @@ import { HttpErrorResponse } from '@angular/common/http';
   styleUrl: './displaymore.component.scss'
 })
 export class DisplaymoreComponent implements OnInit{
+   public documentUrl = environment.fileUrl;
   public displayRoleForm!: FormGroup;
   docuID: string | null = null;
   patient: any = null;
@@ -37,6 +39,7 @@ export class DisplaymoreComponent implements OnInit{
   documentForm: any;
 
   constructor(private route: ActivatedRoute,
+
     public documentServices:DocumentsService,
     private dialog: MatDialog
 
@@ -67,6 +70,12 @@ export class DisplaymoreComponent implements OnInit{
     }
   }
 
+  viewPDF(element: any) {
+    if (element?.document_file) {
+      const url = this.documentUrl + element.document_file;
+      window.open(url, '_blank');
+    }
+  }
 
   // public getMoreData() {
   //   if (!this.docuID) return;

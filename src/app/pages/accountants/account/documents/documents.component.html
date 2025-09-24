@@ -45,7 +45,7 @@
           <!-- Name Column -->
           <ng-container matColumnDef="tin_number">
             <th mat-header-cell *matHeaderCellDef class="text-neutral-500 dark:text-neutral-400"> Tin Number </th>
-            <td mat-cell *matCellDef="let element,"> {{element.tin_number}} </td>
+            <td mat-cell *matCellDef="let element,"> {{element.tin_number || 'N/A'}} </td>
           </ng-container>
 
           <ng-container matColumnDef="types">

@@ -67,16 +67,12 @@
     <div class="mt-8">
       <ng-container *ngIf="documentForm.document_file && documentForm.document_file.endsWith('.pdf'); else noPdf">
         <a
-          [href]="'http://127.0.0.1:8000/storage/' + documentForm.document_file"
-          target="_blank"
-          class="inline-flex items-center gap-2 text-indigo-600 hover:text-indigo-800 font-medium text-sm transition mt-4"
-        >
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round"
-              d="M15.75 9V5.25A2.25 2.25 0 0013.5 3H6.75A2.25 2.25 0 004.5 5.25v13.5A2.25 2.25 0 006.75 21h10.5A2.25 2.25 0 0019.5 18.75V12m-3.75-3L21 3m0 0v4.5M21 3h-4.5" />
-          </svg>
-          View Referral Letter (PDF)
-        </a>
+                *ngIf="documentForm?.document_file"
+                (click)="viewPDF(documentForm)"
+                class="inline-flex items-center gap-1 text-indigo-600 hover:text-indigo-800 cursor-pointer"
+              >
+                <mat-icon>picture_as_pdf</mat-icon> View PDF
+              </a>
       </ng-container>
 
       <ng-template #noPdf>
